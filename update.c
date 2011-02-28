@@ -18,12 +18,12 @@ int updateAllProcs() {
 	DIRP = opendir("/proc");
 
 	while ((direntp = readdir(DIRP))) {
-			pid = atoi(direntp->d_name);
-			if (pid == 0) {
-				continue;
-			}
+		pid = atoi(direntp->d_name);
+		if (pid == 0) {
+			continue;
+		}
 
-			updateProc(pid);
+		updateProc(pid);
 	}
 	closedir(DIRP);
 
@@ -110,10 +110,10 @@ int parseCmdLine(struct Process *proc, int fd) {
 	/* figure out argc */
 	proc->argc=0;
 	for (i=0; i < buflen; i++) {
-			if (buf[i] == '\0'){
-					proc->argc++;
-			}
-			c++;
+		if (buf[i] == '\0'){
+			proc->argc++;
+		}
+		c++;
 	}
 
 	/* One for each pointer plus null */

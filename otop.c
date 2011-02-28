@@ -3,13 +3,13 @@
 
 int main(int argc, char ** argp) {
 
-		init();
+	init();
 
-		updateAllProcs();
-		listAllProcs();
+	updateAllProcs();
+	listAllProcs();
 
-		cleanup();
+	cleanup();
 
-		return 0;
+	return 0;
 }
 
