@@ -16,7 +16,7 @@ struct Process {
 	char ** argv;
 
 	/* stat */
-	char name[1024];
+	char *name;
 	char state;
 	unsigned int pid;
 	unsigned int ppid;
@@ -26,6 +26,35 @@ struct Process {
 	unsigned int tpgid;
 	unsigned int rchar;
 	unsigned int wchar;
+	unsigned int flags;
+	unsigned long minflt;
+	unsigned long cminflt;
+	unsigned long majflt;
+	unsigned long cmajflt;
+	unsigned long utime;
+	unsigned long stime;
+	long int cutime;
+	long int cstime;
+	long int priority;
+	long int nice;
+	long int numthreads;
+	unsigned long long starttime;
+	unsigned long vsize;
+	long int rss;
+	unsigned long rsslim;
+	unsigned long startcode;
+	unsigned long endcode;
+	unsigned long startstack;
+	unsigned long kstkesp;
+	unsigned long kstkeip;
+	unsigned long wchan;
+	int exit_signal;
+	int processor;
+	unsigned int rt_priority;
+	unsigned int policy;
+	unsigned long long delayacct_blkio_ticks;
+	unsigned long guest_time;
+	long int cguest_time;							
 
 	/* io */
 	unsigned int syscr;

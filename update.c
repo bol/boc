@@ -61,15 +61,44 @@ int parseStat(struct Process *proc, int fd) {
 
 	read(fd, buf, sizeof(buf));
 
-	sscanf(buf, "%d %s %c %d %d %d %d %d",
+	sscanf(buf, "%d %as %c %d %d %d %d %d %u %lu %lu %lu %lu %lu %lu %ld %ld %ld %ld %ld %*d %llu %lu %ld %lu %lu %lu %lu %lu %lu %*u %*u %*u %*u %lu %*u %*u %d %d %u %u %llu %lu %ld",
 					&proc->pid,
-					proc->name,
+					&proc->name,
 					&proc->state,
 					&proc->ppid,
 					&proc->pgrp,
 					&proc->session,
 					&proc->tty_nr,
-					&proc->tpgid);
+					&proc->tpgid,
+					&proc->flags,
+					&proc->minflt,
+					&proc->cminflt,
+					&proc->majflt,
+					&proc->cmajflt,
+					&proc->utime,
+					&proc->stime,
+					&proc->cutime,
+					&proc->cstime,
+					&proc->priority,
+					&proc->nice,
+					&proc->numthreads,
+					&proc->starttime,
+					&proc->vsize,
+					&proc->rss,
+					&proc->rsslim,
+					&proc->startcode,
+					&proc->endcode,
+					&proc->startstack,
+					&proc->kstkesp,
+					&proc->kstkeip,
+					&proc->wchan,
+					&proc->exit_signal,
+					&proc->processor,
+					&proc->rt_priority,
+					&proc->policy,
+					&proc->delayacct_blkio_ticks,
+					&proc->guest_time,
+					&proc->cguest_time);
 
 	return 0;
 }

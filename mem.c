@@ -55,6 +55,8 @@ int deleteProcess(struct Process *proc) {
 		free(proc->argv);
 
 	}
+	free(proc->name);
+
 	free(proc);
 
 	return 0;
