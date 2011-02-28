@@ -48,6 +48,7 @@ int deleteProcess(struct Process *);
 int cleanup();
 
 /* print.c */
+char *fullArgv(struct Process *);
 int listAllProcs();
 
 /* update.c */

@@ -43,6 +43,11 @@ int updateProc(int pid) {
 	parseStat(proc, fd);
 	close(fd);
 
+	sprintf(path, "/proc/%i/io", pid);
+	fd = open(path, O_RDONLY);
+	parseIo(proc, fd);
+	close(fd);
+
 	sprintf(path, "/proc/%i/cmdline", pid);
 	fd = open(path, O_RDONLY);
 	parseCmdLine(proc, fd);
@@ -127,12 +132,6 @@ int parseCmdLine(struct Process *proc, int fd) {
 		}
 		c++;
 	}
-
-	printf("%d\t%s", proc->argc, proc->argv[0]);
-	for (i=1; i < proc->argc; i++) {
-			printf(" %s", proc->argv[i]);
-	}
-	printf("\n");
 
 	return 0;
 }
