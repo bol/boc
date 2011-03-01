@@ -5,8 +5,8 @@ project(otop)
 set(CMAKE_C_FLAGS "-ggdb -Wall -Wextra")
 
 set(SOURCE_FILES otop
-				mem 
-				print
-				update)
+		mem 
+		print
+		update)
 
 add_executable(otop ${SOURCE_FILES}) 

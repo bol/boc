@@ -74,12 +74,15 @@ struct Process {
 	unsigned long guest_time;
 	long int cguest_time;							
 
-	/* io */
-	unsigned int syscr;
-	unsigned int syscw;
-	unsigned int read_bytes;
-	unsigned int write_bytes;
-	unsigned int cancelled_write_bytes;
+	/* status */
+	int ruid;
+	int euid;
+	int ssuid;
+	int fsuid;
+	int rgid;
+	int egid;
+	int ssgid;
+	int fsgid;
 
 	/* statm */
 	unsigned int size;
@@ -87,6 +90,14 @@ struct Process {
 	unsigned int share;
 	unsigned int text;
 	unsigned int data;
+
+	/* io */
+	unsigned int syscr;
+	unsigned int syscw;
+	unsigned int read_bytes;
+	unsigned int write_bytes;
+	unsigned int cancelled_write_bytes;
+
 };
 
 /* global variables */
@@ -110,6 +121,7 @@ int updateAllProcs();
 int updateProc(int);
 int parseStat(struct Process *, int);
 int parseStatm(struct Process *, int);
+int parseStatus(struct Process *, int);
 int parseIo(struct Process *, int);
 int parseCmdLine(struct Process *, int);
 int getIOPrio(struct Process *);

@@ -50,6 +50,11 @@ int updateProc(int pid) {
 	parseStatm(proc, fd);
 	close(fd);
 
+	sprintf(path, "/proc/%i/status", pid);
+	fd = open(path, O_RDONLY);
+	parseStatus(proc, fd);
+	close(fd);
+
 	sprintf(path, "/proc/%i/io", pid);
 	fd = open(path, O_RDONLY);
 	parseIo(proc, fd);
@@ -122,6 +127,26 @@ int parseStatm(struct Process *proc, int fd) {
 		&proc->share,
 		&proc->text,
 		&proc->data);
+
+	return 0;
+}
+
+int parseStatus(struct Process *proc, int fd) {
+	char buf[1024];
+	int r;
+
+	read(fd, buf, sizeof(buf));
+
+	r = sscanf(buf, "Name: %*s\nState: %*[^\n]\nTgid: %*d\nPid: %*d\nPPid: %*d\nTracerPid: %*d\nUid: %d %d %d %d\nGid: %d %d %d %d\n",
+		&proc->ruid,
+		&proc->euid,
+		&proc->ssuid,
+		&proc->fsuid,
+		&proc->rgid,
+		&proc->egid,
+		&proc->ssgid,
+		&proc->fsgid);
+
 
 	return 0;
 }
