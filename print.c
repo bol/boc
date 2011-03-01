@@ -18,7 +18,7 @@ int listAllProcs() {
 char * fullArgv(struct Process *proc) {
 	static char buf[1024];
 	char *c;
-	int i;
+	unsigned int i;
 
 	c = buf;
 	c += sprintf(c, "%s", proc->argv[0]);

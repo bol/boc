@@ -47,7 +47,7 @@ int deleteProcess(struct Process *proc) {
 	}
 
 	if (proc->has_commandline) {
-		int i;
+		unsigned int i;
 
 		for (i=0; i < proc->argc; i++) {
 			free(proc->argv[i]);
