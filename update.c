@@ -1,5 +1,6 @@
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <sys/syscall.h>
 #include <dirent.h>
 #include <fcntl.h>
 #include <stdio.h>
@@ -36,6 +37,7 @@ int updateProc(int pid) {
 	struct Process *proc;
 
 	proc = newProcess();
+	proc->pid = pid;
 	
 	/* FIXME: Should not assume /proc*/
 	sprintf(path, "/proc/%i/stat", pid);
@@ -52,6 +54,8 @@ int updateProc(int pid) {
 	fd = open(path, O_RDONLY);
 	parseCmdLine(proc, fd);
 	close(fd);
+
+	getIOPrio(proc);
 
 	return 0;
 }
@@ -161,6 +165,12 @@ int parseCmdLine(struct Process *proc, int fd) {
 		}
 		c++;
 	}
+
+	return 0;
+}
+
+int getIOPrio(struct Process *proc) {
+	proc->iopriority = syscall(SYS_ioprio_get, IOPRIO_WHO_PROCESS, proc->pid);
 
 	return 0;
 }

@@ -3,6 +3,23 @@
 
 #include <stdbool.h>
 
+/* ioprio stuff stolen from ioprio.h in the linux kernel */
+enum { IOPRIO_WHO_PROCESS = 1 };
+
+enum {
+        IOPRIO_CLASS_NONE,
+        IOPRIO_CLASS_RT,
+        IOPRIO_CLASS_BE,
+        IOPRIO_CLASS_IDLE,
+};
+
+#define IOPRIO_CLASS_SHIFT      (13)
+#define IOPRIO_PRIO_MASK        ((1UL << IOPRIO_CLASS_SHIFT) - 1)
+
+#define IOPRIO_PRIO_CLASS(mask) ((mask) >> IOPRIO_CLASS_SHIFT)
+#define IOPRIO_PRIO_DATA(mask)  ((mask) & IOPRIO_PRIO_MASK)
+
+
 /* structs */
 struct Process {
 	/* list pointers */
@@ -10,6 +27,8 @@ struct Process {
 	struct Process * prev_process;
 
 	bool has_commandline;
+	unsigned int pid;
+	int iopriority;
 
 	/* cmdline */
 	unsigned int argc;
@@ -18,7 +37,6 @@ struct Process {
 	/* stat */
 	char *name;
 	char state;
-	unsigned int pid;
 	unsigned int ppid;
 	unsigned int pgrp;
 	unsigned int session;

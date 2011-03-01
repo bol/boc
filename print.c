@@ -6,9 +6,9 @@ int listAllProcs() {
 	struct Process *proc;
 
 	for (proc = first_process; (proc->next_process); proc = proc->next_process) {
-
-		printf("%-7d %c %-12d\t\t%-25s\n", proc->pid, proc->state,
+		printf("%-7d %c %-12d\t%2d %2lu\t%-25s\n", proc->pid, proc->state,
 		(proc->write_bytes - proc->cancelled_write_bytes),
+		IOPRIO_PRIO_CLASS(proc->iopriority), IOPRIO_PRIO_DATA(proc->iopriority),
 		(proc->has_commandline? fullArgv(proc):proc->name));
 	}
 
