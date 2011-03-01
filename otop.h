@@ -104,5 +104,6 @@ int updateProc(int);
 int parseStat(struct Process *, int);
 int parseIo(struct Process *, int);
 int parseCmdLine(struct Process *, int);
+int getIOPrio(struct Process *);
 
 #endif // __OTOP_H
