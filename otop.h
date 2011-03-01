@@ -80,6 +80,13 @@ struct Process {
 	unsigned int read_bytes;
 	unsigned int write_bytes;
 	unsigned int cancelled_write_bytes;
+
+	/* statm */
+	unsigned int size;
+	unsigned int resident;
+	unsigned int share;
+	unsigned int text;
+	unsigned int data;
 };
 
 /* global variables */
@@ -102,6 +109,7 @@ int listAllProcs();
 int updateAllProcs();
 int updateProc(int);
 int parseStat(struct Process *, int);
+int parseStatm(struct Process *, int);
 int parseIo(struct Process *, int);
 int parseCmdLine(struct Process *, int);
 int getIOPrio(struct Process *);

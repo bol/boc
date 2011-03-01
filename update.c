@@ -45,6 +45,11 @@ int updateProc(int pid) {
 	parseStat(proc, fd);
 	close(fd);
 
+	sprintf(path, "/proc/%i/statm", pid);
+	fd = open(path, O_RDONLY);
+	parseStatm(proc, fd);
+	close(fd);
+
 	sprintf(path, "/proc/%i/io", pid);
 	fd = open(path, O_RDONLY);
 	parseIo(proc, fd);
@@ -103,6 +108,20 @@ int parseStat(struct Process *proc, int fd) {
 					&proc->delayacct_blkio_ticks,
 					&proc->guest_time,
 					&proc->cguest_time);
+
+	return 0;
+}
+
+int parseStatm(struct Process *proc, int fd) {
+	char buf[1024];
+
+	read(fd, buf, sizeof(buf));
+	sscanf(buf, "%u %u %u %u %*u %u %*u",
+		&proc->size,
+		&proc->resident,
+		&proc->share,
+		&proc->text,
+		&proc->data);
 
 	return 0;
 }
