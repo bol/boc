@@ -74,8 +74,7 @@ int parseStat(struct Process *proc, int fd) {
 	char buf[1024];
 
 	read(fd, buf, sizeof(buf));
-
-	sscanf(buf, "%d %ms %c %d %d %d %d %d %u %lu %lu %lu %lu %lu %lu %ld %ld %ld %ld %ld %*d %llu %lu %ld %lu %lu %lu %lu %lu %lu %*u %*u %*u %*u %lu %*u %*u %d %d %u %u %llu %lu %ld",
+	sscanf(buf, "%d (%m[^)]) %c %d %d %d %d %d %u %lu %lu %lu %lu %lu %lu %ld %ld %ld %ld %ld %*d %llu %lu %ld %lu %lu %lu %lu %lu %lu %*u %*u %*u %*u %lu %*u %*u %d %d %u %u %llu %lu %ld",
 					&proc->pid,
 					&proc->name,
 					&proc->state,
