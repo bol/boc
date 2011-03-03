@@ -7,7 +7,32 @@ int init() {
 	first_process = NULL;
 	last_process = NULL;
 
+	first_filter = NULL;
+	last_filter = NULL;
+
 	return 0;
+}
+
+struct Filter *newFilter() {
+	struct Filter *filter;
+
+	filter = malloc(sizeof(struct Filter));
+	memset(filter, 0, sizeof(struct Filter));
+
+	filter->next_filter = NULL;
+	filter->prev_filter = last_filter;
+
+	if (first_filter == NULL) {
+		first_filter = filter;
+	}
+
+	if(last_filter) {
+		last_filter->next_filter = filter;
+	}
+
+	last_filter = filter;
+
+	return filter;
 }
 
 struct Process *newProcess() {

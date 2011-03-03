@@ -1,6 +1,8 @@
 #ifndef __OTOP_H
 #define __OTOP_H
 
+#include <sys/types.h>
+#include <regex.h>
 #include <stdbool.h>
 
 /* ioprio stuff stolen from ioprio.h in the linux kernel */
@@ -100,14 +102,32 @@ struct Process {
 
 };
 
+struct Filter {
+	/* list pointers */
+	struct Filter * next_filter;
+	struct Filter * prev_filter;
+
+	unsigned int pid;
+	char * name;
+	char * regular_expression;
+	regex_t preg;
+};
+
 /* global variables */
 struct Process * first_process;
 struct Process * last_process;
 
+struct Filter * first_filter;
+struct Filter * last_filter;
+
 /* function prototypes */
+
+/* boc.c */
+int parseArgs(int, char * const *);
 
 /* mem.c */
 int init();
+struct Filter * newFilter();
 struct Process * newProcess();
 int deleteProcess(struct Process *);
 int cleanup();
@@ -115,6 +135,10 @@ int cleanup();
 /* print.c */
 char *fullArgv(struct Process *);
 int listAllProcs();
+int listProc(struct Process *);
+
+/* touchup.c */
+int touchupFilters();
 
 /* update.c */
 int updateAllProcs();

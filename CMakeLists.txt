@@ -7,6 +7,7 @@ set(CMAKE_C_FLAGS "-ggdb -Wall -Wextra")
 set(SOURCE_FILES boc
 		mem 
 		print
+		touchup
 		update)
 
 add_executable(boc ${SOURCE_FILES}) 
