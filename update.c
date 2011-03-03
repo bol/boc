@@ -73,6 +73,7 @@ int updateProc(int pid) {
 int parseStat(struct Process *proc, int fd) {
 	char buf[1024];
 
+	memset(&buf, 0, sizeof(buf));
 	read(fd, buf, sizeof(buf));
 	sscanf(buf, "%d (%m[^)]) %c %d %d %d %d %d %u %lu %lu %lu %lu %lu %lu %ld %ld %ld %ld %ld %*d %llu %lu %ld %lu %lu %lu %lu %lu %lu %*u %*u %*u %*u %lu %*u %*u %d %d %u %u %llu %lu %ld",
 					&proc->pid,
@@ -119,7 +120,9 @@ int parseStat(struct Process *proc, int fd) {
 int parseStatm(struct Process *proc, int fd) {
 	char buf[1024];
 
+	memset(&buf, 0, sizeof(buf));
 	read(fd, buf, sizeof(buf));
+
 	sscanf(buf, "%u %u %u %u %*u %u %*u",
 		&proc->size,
 		&proc->resident,
@@ -134,6 +137,7 @@ int parseStatus(struct Process *proc, int fd) {
 	char buf[1024];
 	int r;
 
+	memset(&buf, 0, sizeof(buf));
 	read(fd, buf, sizeof(buf));
 
 	r = sscanf(buf, "Name: %*s\nState: %*[^\n]\nTgid: %*d\nPid: %*d\nPPid: %*d\nTracerPid: %*d\nUid: %d %d %d %d\nGid: %d %d %d %d\n",
@@ -153,7 +157,9 @@ int parseStatus(struct Process *proc, int fd) {
 int parseIo(struct Process *proc, int fd) {
 	char buf[1024];
 
+	memset(&buf, 0, sizeof(buf));
 	read(fd, buf, sizeof(buf));
+
 	sscanf(buf, "rchar: %d\nwchar: %d\nsyscr: %d\nsyscw: %d\nread_bytes: %d\nwrite_bytes: %d\ncancelled_write_bytes: %d", 
 					&proc->rchar,
 					&proc->wchar,
