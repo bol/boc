@@ -1,3 +1,6 @@
+#include <sys/types.h>
+#include <grp.h>
+#include <pwd.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -33,10 +36,9 @@ int listAllProcs() {
 }
 
 int listProc(struct Process * proc) {
-		printf("%-7d %c %-12d\t%-3ld %d %lu\t%-6d %-6d\t%-25s\n", proc->pid, proc->state,
-		(proc->write_bytes - proc->cancelled_write_bytes),
-		proc->nice, IOPRIO_PRIO_CLASS(proc->iopriority), IOPRIO_PRIO_DATA(proc->iopriority),
-		proc->euid, proc->egid,
+		
+		printf("%-7d %c %-8s %-8s\t%-25s\n", proc->pid, proc->state,
+		uidToName(proc->euid), gidToName(proc->egid),
 		(proc->has_commandline? fullArgv(proc):proc->name));
 
 		return 0;
@@ -54,4 +56,20 @@ char * fullArgv(struct Process *proc) {
 	}
 
 	return buf;
+}
+
+char * uidToName(uid_t uid) {
+	struct passwd *passwd;
+
+	passwd = getpwuid(uid);
+
+	return passwd->pw_name;
+}
+
+char * gidToName(gid_t gid) {
+	struct group *group;
+
+	group = getgrgid(gid);
+
+	return group->gr_name;
 }

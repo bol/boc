@@ -134,6 +134,8 @@ int cleanup();
 
 /* print.c */
 char *fullArgv(struct Process *);
+char *uidToName(uid_t uid);
+char *gidToName(gid_t gid);
 int listAllProcs();
 int listProc(struct Process *);
 
