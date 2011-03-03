@@ -8,7 +8,7 @@
 #include <string.h>
 #include <unistd.h>
 
-#include "otop.h"
+#include "boc.h"
 
 int updateAllProcs() {
 	DIR *DIRP;

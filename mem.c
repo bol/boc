@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "otop.h"
+#include "boc.h"
 
 int init() {
 	first_process = NULL;

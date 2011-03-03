@@ -1,12 +1,12 @@
 cmake_minimum_required(VERSION 2.6)
 
-project(otop)
+project(boc)
 
 set(CMAKE_C_FLAGS "-ggdb -Wall -Wextra")
 
-set(SOURCE_FILES otop
+set(SOURCE_FILES boc
 		mem 
 		print
 		update)
 
-add_executable(otop ${SOURCE_FILES}) 
+add_executable(boc ${SOURCE_FILES}) 

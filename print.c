@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#include "otop.h"
+#include "boc.h"
 
 int listAllProcs() {
 	struct Process *proc;
