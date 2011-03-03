@@ -35,6 +35,26 @@ struct Filter *newFilter() {
 	return filter;
 }
 
+int deleteFilter(struct Filter * filter) {
+	if (filter != first_filter) {
+		filter->prev_filter->next_filter = filter->next_filter;
+	} else {
+		first_filter = filter->next_filter;
+	}
+
+	if (filter != last_filter) {
+		filter->next_filter->prev_filter = filter->prev_filter;
+	} else {
+		last_filter = filter->prev_filter;
+	}
+
+		regfree(&filter->preg);
+
+	free(filter);
+
+	return 0;
+}
+
 struct Process *newProcess() {
 	struct Process *proc;
 
@@ -91,6 +111,10 @@ int cleanup() {
 
 	while(last_process) {
 		deleteProcess(last_process);
+	}
+
+	while(last_filter) {
+		deleteFilter(last_filter);
 	}
 
 	return 0;
