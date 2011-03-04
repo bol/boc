@@ -34,6 +34,9 @@ unsigned int options;
 enum {
 	OPT_KERNEL	= 1,
 	OPT_TREE	= 2,
+	OPT_IO		= 4,
+	OPT_MEM		= 8,
+	OPT_USER	= 16,
 };
 
 #define SETOPT(opt)	(options |= opt)
@@ -154,6 +157,7 @@ char *gidToName(gid_t gid);
 int drawTree();
 int listAllProcs();
 int listProc(struct Process *);
+int listHeader();
 
 /* touchup.c */
 int touchupFilters();

@@ -13,6 +13,7 @@ int listAllProcs() {
 	struct Filter *filter;
 	struct Process *proc;
 
+	listHeader();
 	for (proc = first_process; (proc->next_process); proc = proc->next_process) {
 		if ( !TESTOPT(OPT_KERNEL) && (proc->ppid == 0|| proc->size == 0)) {
 			continue;
@@ -42,11 +43,34 @@ int listAllProcs() {
 	return 0;
 }
 
+int listHeader() {
+		printf("%-7s %c ", "PID", 'S');
+		if (TESTOPT(OPT_USER)) {
+			printf("%-10s %-10s ", "USER", "GROUP");
+		}
+		if (TESTOPT(OPT_IO)) {
+			printf("%-10s %-10s", "READ", "WRITE");
+		}
+		if (TESTOPT(OPT_MEM)) {
+			printf("%-10s %-10s %-10s %-10s %-10s ", "SIZE", "RESIDENT", "SHARE", "TEXT", "DATA");
+		}
+		printf("%-25s\n", "NAME");
+
+		return 0;
+}
+
 int listProc(struct Process * proc) {
-		
-		printf("%-7d %c %-10s %-10s\t%-25s\n", proc->pid, proc->state,
-		uidToName(proc->euid), gidToName(proc->egid),
-		(proc->has_commandline? fullArgv(proc):proc->name));
+		printf("%-7d %c ", proc->pid, proc->state);
+		if (TESTOPT(OPT_USER)) {
+			printf("%-10s %-10s ", uidToName(proc->euid), gidToName(proc->egid));
+		}
+		if (TESTOPT(OPT_IO)) {
+			printf("%-10d %-10d", proc->read_bytes/1024, (proc->write_bytes - proc->cancelled_write_bytes)/1024);
+		}
+		if (TESTOPT(OPT_MEM)) {
+			printf("%-10d %-10d %-10d %-10d %-10d ", proc->size, proc->resident, proc->share, proc->text, proc->data);
+		}
+		printf("%-25s\n", (proc->has_commandline? fullArgv(proc):proc->name));
 
 		return 0;
 }

@@ -28,16 +28,19 @@ int parseArgs(int argc, char * const *argv) {
 	struct Filter *filter;
 	
 	static struct option long_options[] = {
+		{"io", 0, 0, 'i'},
 		{"kernel", 0, 0, 'k'},
+		{"mem", 0, 0, 'm'},
 		{"name", 1, 0, 'n'},
 		{"pid", 1, 0, 'p'},
 		{"regexp", 1, 0, 'r'},
 		{"tree", 0, 0, 't'},
+		{"user", 0, 0, 'u'},
 		{0, 0, 0, 0},
 	};
 
 	while(1) {
-		c = getopt_long(argc, argv, "kn:p:r:t", long_options, &option_index);
+		c = getopt_long(argc, argv, "kimn:p:r:tu", long_options, &option_index);
 		if (c == -1)
 			break;
 
@@ -45,24 +48,29 @@ int parseArgs(int argc, char * const *argv) {
 			case 'k':
 				SETOPT(OPT_KERNEL);
 				break;
+			case 'i':
+				SETOPT(OPT_IO);
+				break;
+			case 'm':
+				SETOPT(OPT_MEM);
+				break;
 			case 'n':
 				filter = newFilter();
 				filter->name = optarg;
-
 				break;
 			case 'r':
 				filter = newFilter();
 				filter->regular_expression = optarg;
-
 				break;
 			case 'p':
 				filter = newFilter();
 				filter->pid = atoi(optarg);
-
 				break;
 			case 't':
 				SETOPT(OPT_TREE);
-
+				break;
+			case 'u':
+				SETOPT(OPT_USER);
 				break;
 			default:
 				break;
