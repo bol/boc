@@ -10,7 +10,17 @@ int main(int argc, char * const * argv) {
 	parseArgs(argc, argv);
 	updateAllProcs();
 	touchupFilters();
-	listAllProcs();
+	touchupProcs();
+	switch(draw_mode) {
+		case DRAW_TREE:
+			drawTree();
+			break;
+		case DRAW_LIST:
+			listAllProcs();
+			break;
+		default:
+			printf ("Unknown draw mode\n");
+	}
 
 	cleanup();
 
@@ -26,11 +36,12 @@ int parseArgs(int argc, char * const *argv) {
 		{"name", 1, 0, 'n'},
 		{"pid", 1, 0, 'p'},
 		{"regexp", 1, 0, 'r'},
+		{"tree", 1, 0, 't'},
 		{0, 0, 0, 0},
 	};
 
 	while(1) {
-		c = getopt_long(argc, argv, "n:p:r:", long_options, &option_index);
+		c = getopt_long(argc, argv, "n:p:r:t", long_options, &option_index);
 		if (c == -1)
 			break;
 
@@ -48,6 +59,10 @@ int parseArgs(int argc, char * const *argv) {
 			case 'p':
 				filter = newFilter();
 				filter->pid = atoi(optarg);
+
+				break;
+			case 't':
+				draw_mode = DRAW_TREE;
 
 				break;
 			default:

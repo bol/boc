@@ -75,6 +75,7 @@ int parseStat(struct Process *proc, int fd) {
 
 	memset(&buf, 0, sizeof(buf));
 	read(fd, buf, sizeof(buf));
+	/*TODO: sscanf is quite slow, replace with something faster */
 	sscanf(buf, "%d (%m[^)]) %c %d %d %d %d %d %u %lu %lu %lu %lu %lu %lu %ld %ld %ld %ld %ld %*d %llu %lu %ld %lu %lu %lu %lu %lu %lu %*u %*u %*u %*u %lu %*u %*u %d %d %u %u %llu %lu %ld",
 					&proc->pid,
 					&proc->name,

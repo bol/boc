@@ -1,3 +1,6 @@
+/* We want the GNU basename */
+#define _GNU_SOURCE
+
 #include <sys/types.h>
 #include <grp.h>
 #include <pwd.h>
@@ -37,7 +40,7 @@ int listAllProcs() {
 
 int listProc(struct Process * proc) {
 		
-		printf("%-7d %c %-8s %-8s\t%-25s\n", proc->pid, proc->state,
+		printf("%-7d %c %-10s %-10s\t%-25s\n", proc->pid, proc->state,
 		uidToName(proc->euid), gidToName(proc->egid),
 		(proc->has_commandline? fullArgv(proc):proc->name));
 
@@ -50,7 +53,7 @@ char * fullArgv(struct Process *proc) {
 	unsigned int i;
 
 	c = buf;
-	c += sprintf(c, "%s", proc->argv[0]);
+	c += sprintf(c, "%s", ((proc->argv[0][0] == '/')? basename(proc->argv[0]):proc->argv[0]) );
 	for (i=1; i < proc->argc; i++) {
 			c += sprintf(c, " %s", proc->argv[i]);
 	}
@@ -72,4 +75,46 @@ char * gidToName(gid_t gid) {
 	group = getgrgid(gid);
 
 	return group->gr_name;
+}
+
+int drawTree() {
+	struct Process *proc;
+	unsigned int depth, i;
+
+	depth = 0;
+
+	proc = first_process;
+	while (1) {
+		for (i=depth;i>0;i--) {
+			if (i==1) {
+				printf("  |-");
+			} else {
+				printf("  |");
+			}
+		}
+		printf("(%d)%s\n", proc->pid, proc->name);
+
+		if (proc->first_child) {
+			proc = proc->first_child;
+			depth++;
+			continue;
+		}
+
+		if (proc->next_sibling) {
+			proc = proc->next_sibling;
+			continue;
+		}
+
+		while (proc->next_sibling == NULL) {
+			if (proc->parent == NULL) {
+				return 0;
+			}
+			proc = proc->parent;
+			depth--;
+		}
+
+		proc = proc->next_sibling;
+	}
+
+	return -1;
 }
