@@ -21,10 +21,23 @@ enum {
 #define IOPRIO_PRIO_CLASS(mask) ((mask) >> IOPRIO_CLASS_SHIFT)
 #define IOPRIO_PRIO_DATA(mask)  ((mask) & IOPRIO_PRIO_MASK)
 
+
+/* global variables */
+struct Process * first_process;
+struct Process * last_process;
+
+struct Filter * first_filter;
+struct Filter * last_filter;
+unsigned int options;
+
+
 enum {
-	DRAW_LIST=0,
-	DRAW_TREE,
+	OPT_KERNEL	= 1,
+	OPT_TREE	= 2,
 };
+
+#define SETOPT(opt)	(options |= opt)
+#define TESTOPT(opt)	((options & opt) == opt)
 
 
 /* structs */
@@ -122,14 +135,6 @@ struct Filter {
 	regex_t preg;
 };
 
-/* global variables */
-struct Process * first_process;
-struct Process * last_process;
-
-struct Filter * first_filter;
-struct Filter * last_filter;
-int draw_mode;
-
 /* function prototypes */
 
 /* boc.c */
@@ -146,6 +151,7 @@ int cleanup();
 char *fullArgv(struct Process *);
 char *uidToName(uid_t uid);
 char *gidToName(gid_t gid);
+int drawTree();
 int listAllProcs();
 int listProc(struct Process *);
 

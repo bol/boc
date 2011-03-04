@@ -11,15 +11,10 @@ int main(int argc, char * const * argv) {
 	updateAllProcs();
 	touchupFilters();
 	touchupProcs();
-	switch(draw_mode) {
-		case DRAW_TREE:
+	if (TESTOPT(OPT_TREE)) {
 			drawTree();
-			break;
-		case DRAW_LIST:
+	} else {
 			listAllProcs();
-			break;
-		default:
-			printf ("Unknown draw mode\n");
 	}
 
 	cleanup();
@@ -33,19 +28,23 @@ int parseArgs(int argc, char * const *argv) {
 	struct Filter *filter;
 	
 	static struct option long_options[] = {
+		{"kernel", 0, 0, 'k'},
 		{"name", 1, 0, 'n'},
 		{"pid", 1, 0, 'p'},
 		{"regexp", 1, 0, 'r'},
-		{"tree", 1, 0, 't'},
+		{"tree", 0, 0, 't'},
 		{0, 0, 0, 0},
 	};
 
 	while(1) {
-		c = getopt_long(argc, argv, "n:p:r:t", long_options, &option_index);
+		c = getopt_long(argc, argv, "kn:p:r:t", long_options, &option_index);
 		if (c == -1)
 			break;
 
 		switch (c) {
+			case 'k':
+				SETOPT(OPT_KERNEL);
+				break;
 			case 'n':
 				filter = newFilter();
 				filter->name = optarg;
@@ -62,7 +61,7 @@ int parseArgs(int argc, char * const *argv) {
 
 				break;
 			case 't':
-				draw_mode = DRAW_TREE;
+				SETOPT(OPT_TREE);
 
 				break;
 			default:

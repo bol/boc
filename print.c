@@ -14,6 +14,10 @@ int listAllProcs() {
 	struct Process *proc;
 
 	for (proc = first_process; (proc->next_process); proc = proc->next_process) {
+		if ( !TESTOPT(OPT_KERNEL) && (proc->ppid == 0|| proc->size == 0)) {
+			continue;
+		}
+
 		if (first_filter == NULL ) {
 			listProc(proc);
 			continue;
@@ -92,7 +96,7 @@ int drawTree() {
 				printf("  |");
 			}
 		}
-		printf("(%d)%s\n", proc->pid, proc->name);
+		printf("%s\n", (proc->has_commandline? fullArgv(proc):proc->name) );
 
 		if (proc->first_child) {
 			proc = proc->first_child;
