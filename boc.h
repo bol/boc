@@ -37,6 +37,7 @@ enum {
 	OPT_IO		= 4,
 	OPT_MEM		= 8,
 	OPT_USER	= 16,
+	OPT_FULL	= 32,
 };
 
 #define SETOPT(opt)	(options |= opt)

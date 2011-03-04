@@ -82,8 +82,11 @@ char * fullArgv(struct Process *proc) {
 
 	c = buf;
 	c += sprintf(c, "%s", ((proc->argv[0][0] == '/')? basename(proc->argv[0]):proc->argv[0]) );
-	for (i=1; i < proc->argc; i++) {
+
+	if (TESTOPT(OPT_FULL)) {
+		for (i=1; i < proc->argc; i++) {
 			c += sprintf(c, " %s", proc->argv[i]);
+		}
 	}
 
 	return buf;

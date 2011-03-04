@@ -28,6 +28,7 @@ int parseArgs(int argc, char * const *argv) {
 	struct Filter *filter;
 	
 	static struct option long_options[] = {
+		{"full", 0, 0, 'f'},
 		{"io", 0, 0, 'i'},
 		{"kernel", 0, 0, 'k'},
 		{"mem", 0, 0, 'm'},
@@ -40,16 +41,19 @@ int parseArgs(int argc, char * const *argv) {
 	};
 
 	while(1) {
-		c = getopt_long(argc, argv, "kimn:p:r:tu", long_options, &option_index);
+		c = getopt_long(argc, argv, "fkimn:p:r:tu", long_options, &option_index);
 		if (c == -1)
 			break;
 
 		switch (c) {
-			case 'k':
-				SETOPT(OPT_KERNEL);
+			case 'f':
+				SETOPT(OPT_FULL);
 				break;
 			case 'i':
 				SETOPT(OPT_IO);
+				break;
+			case 'k':
+				SETOPT(OPT_KERNEL);
 				break;
 			case 'm':
 				SETOPT(OPT_MEM);
