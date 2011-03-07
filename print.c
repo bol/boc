@@ -110,17 +110,30 @@ char * gidToName(gid_t gid) {
 
 int drawTree() {
 	struct Process *proc;
-	unsigned int depth, i;
+	struct Process *parent;
+	int depth, i, j;
 
 	depth = 0;
 
 	proc = first_process;
 	while (1) {
-		for (i=depth;i>0;i--) {
-			if (i==1) {
-				printf("  |-");
+		for ( i=depth; i>0; i-- ) {
+			if ( i==1 ) {
+					if(proc->next_sibling) {
+						printf("  |-");
+					} else {
+						printf("  `-");
+					}
 			} else {
-				printf("  |");
+				parent = proc->parent;
+				for ( j=i; j>2; j-- ) {
+						parent = parent->parent;
+				}
+				if (parent->next_sibling) {
+					printf("  |");
+				} else {
+					printf("   ");
+				}
 			}
 		}
 		printf("%s\n", (proc->has_commandline? fullArgv(proc):proc->name) );
