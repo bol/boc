@@ -143,6 +143,7 @@ struct Filter {
 
 /* boc.c */
 int parseArgs(int, char * const *);
+int usage(char * const *);
 
 /* mem.c */
 int init();
