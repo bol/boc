@@ -2,6 +2,7 @@
 
 #include "boc.h"
 
+/* Compiles all the regular expressions */
 int touchupFilters () {
 	struct Filter *filter;
 
@@ -14,6 +15,7 @@ int touchupFilters () {
 	return 0;
 }
 
+/* Set up links between parents, children and siblings */
 int touchupProcs () {
 	struct Process *proc;
 	struct Process *pproc;

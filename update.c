@@ -15,7 +15,7 @@ int updateAllProcs() {
 	struct dirent *direntp;
 	int pid;
 
-	/* FIXME: Should not assume /proc*/
+	/* FIXME: Should use mtab instead of  assuming /proc */
 	DIRP = opendir("/proc");
 
 	while ((direntp = readdir(DIRP))) {
