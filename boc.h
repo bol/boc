@@ -50,9 +50,13 @@ struct Process {
 	struct Process * next_process;
 	struct Process * prev_process;
 
+	/* these will point to parent, child and sibling processes
+	 * after the markup phase */
 	struct Process * first_child;
 	struct Process * next_sibling;
 	struct Process * parent;
+	/* And the colour value is used for some very basic pathfinding */
+	unsigned int colour;
 
 	bool has_commandline;
 	unsigned int pid;
@@ -157,9 +161,12 @@ char *fullArgv(struct Process *);
 char *uidToName(uid_t uid);
 char *gidToName(gid_t gid);
 int drawTree();
+int colouriseProcs();
+int colourise(struct Process *);
 int listAllProcs();
 int listProc(struct Process *);
 int listHeader();
+int treePrint(struct Process *, int);
 
 /* touchup.c */
 int touchupFilters();

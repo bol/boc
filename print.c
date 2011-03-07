@@ -9,34 +9,68 @@
 
 #include "boc.h"
 
-int listAllProcs() {
+int colouriseProcs() {
 	struct Filter *filter;
 	struct Process *proc;
 
-	listHeader();
 	for (proc = first_process; (proc->next_process); proc = proc->next_process) {
-		if ( !TESTOPT(OPT_KERNEL) && (proc->ppid == 0|| proc->size == 0)) {
+		if ( !TESTOPT(OPT_KERNEL) && (proc->size == 0)) {
 			continue;
 		}
 
 		if (first_filter == NULL ) {
-			listProc(proc);
+			proc->colour = 1;
 			continue;
 		}
 
 		for(filter = first_filter; (filter); filter = filter->next_filter) {
 			if ((filter->pid > 0) && filter->pid == proc->pid) {
-				listProc(proc);
+				colourise(proc);
 				continue;
 			} else if ((filter->name) && 0 == strcmp(filter->name,
 						(proc->has_commandline? fullArgv(proc):proc->name))) {
-				listProc(proc);
+				colourise(proc);
 				continue;
 			} else if ((filter->regular_expression) && 0 == regexec(&filter->preg,
 						(proc->has_commandline? fullArgv(proc):proc->name), 0, 0, 0)) {
-						
-				listProc(proc);
+				colourise(proc);
 			}
+		}
+	}
+
+	return 0;
+}
+
+int colourise(struct Process *proc) {
+	struct Process *p, *q;
+
+	p = proc;
+	while(p) {
+		p->colour++;
+		p = p->parent;
+	}
+
+	p = proc->first_child;
+	while(p) {
+		q = p;
+		while (q) {
+			q->colour++;
+			q = q->next_sibling;
+		}
+		p = p->first_child;
+	}
+
+	return 0;
+
+}
+
+int listAllProcs() {
+	struct Process *proc;
+
+	listHeader();
+	for (proc = first_process; (proc->next_process); proc = proc->next_process) {
+		if (proc->colour != 0) {
+			listProc(proc);
 		}
 	}
 
@@ -110,55 +144,63 @@ char * gidToName(gid_t gid) {
 
 int drawTree() {
 	struct Process *proc;
-	struct Process *parent;
-	int depth, i, j;
+	int depth;
 
 	depth = 0;
 
 	proc = first_process;
 	while (1) {
-		for ( i=depth; i>0; i-- ) {
-			if ( i==1 ) {
-					if(proc->next_sibling) {
-						printf("  |-");
-					} else {
-						printf("  `-");
-					}
-			} else {
-				parent = proc->parent;
-				for ( j=i; j>2; j-- ) {
-						parent = parent->parent;
-				}
-				if (parent->next_sibling) {
-					printf("  |");
-				} else {
-					printf("   ");
-				}
-			}
+		if (proc->colour != 0) {
+			treePrint(proc, depth);
 		}
-		printf("%s\n", (proc->has_commandline? fullArgv(proc):proc->name) );
 
 		if (proc->first_child) {
 			proc = proc->first_child;
 			depth++;
 			continue;
-		}
-
-		if (proc->next_sibling) {
+		} else if (proc->next_sibling) {
 			proc = proc->next_sibling;
 			continue;
-		}
-
-		while (proc->next_sibling == NULL) {
-			if (proc->parent == NULL) {
-				return 0;
+		} else {
+			while (proc->next_sibling == NULL) {
+				if (proc->parent == NULL) {
+					return 0;
+				}
+				proc = proc->parent;
+				depth--;
 			}
-			proc = proc->parent;
-			depth--;
-		}
 
-		proc = proc->next_sibling;
+			proc = proc->next_sibling;
+		}
 	}
 
 	return -1;
+}
+
+int treePrint(struct Process *proc, int depth) {
+	struct Process *parent;
+	int i, j;
+
+	for ( i=depth; i>0; i-- ) {
+		if ( i==1 ) {
+				if(proc->next_sibling && proc->next_sibling->colour) {
+					printf("  |-");
+				} else {
+					printf("  `-");
+				}
+		} else {
+			parent = proc->parent;
+			for ( j=i; j>2; j-- ) {
+					parent = parent->parent;
+			}
+			if (parent->next_sibling && parent->next_sibling->colour) {
+				printf("  |");
+			} else {
+				printf("   ");
+			}
+		}
+	}
+	printf("%s\n", (proc->has_commandline? fullArgv(proc):proc->name) );
+
+	return 0;
 }

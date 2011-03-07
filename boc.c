@@ -12,6 +12,7 @@ int main(int argc, char * const * argv) {
 	updateAllProcs();
 	touchupFilters();
 	touchupProcs();
+	colouriseProcs();
 	if (TESTOPT(OPT_TREE)) {
 			drawTree();
 	} else {
