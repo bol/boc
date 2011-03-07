@@ -1,1 +1,6 @@
 Boc is a tool for getting information about your processes.
+
+To build out of source:
+1.) mkdir build; cd build
+2.) cmake ..
+3.) make
