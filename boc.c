@@ -93,20 +93,20 @@ int parseArgs(int argc, char * const *argv) {
 int usage(char * const * argv) {
 	printf("Usage: %s [ -f ] [ -i ] [ -k ] [ -m ] [ -u ] [-p PID ] [ -n NAME ] [ -r REGEXP ]\n", argv[0] );
 	printf("       %s -t [ -f ]\n", argv[0] );
-	printf("Display a list or tree of processes.\n\n");
+	printf("\nDisplay a list or tree of processes.\n\n");
 	printf("\nGeneral options:\n");
-	printf("  -h,%-15s show this help message", "--help\n");
-	printf("  -t,%-15s draw a process tree", "--tree\n");
+	printf("  -h,%-15s show this help message\n", "--help");
+	printf("  -t,%-15s draw a process tree\n", "--tree");
 	printf("\nInformation options:\n");
-	printf("  -f,%-15s include command line arguments in the process name", "--full\n");
-	printf("  -i,%-15s show information about process io\n", "--io\n");
-	printf("  -k,%-15s show kernel processes\n", "--kernel\n");
-	printf("  -m,%-15s show information about process memory usage\n", "--memory\n");
-	printf("  -u,%-15s show information about process ownership\n", "--user\n");
+	printf("  -f,%-15s include command line arguments in the process name\n", "--full");
+	printf("  -i,%-15s show information about process io\n", "--io");
+	printf("  -k,%-15s show kernel processes\n", "--kernel");
+	printf("  -m,%-15s show information about process memory usage\n", "--memory");
+	printf("  -u,%-15s show information about process ownership\n", "--user");
 	printf("\nSearch options:\n");
-	printf("  -n NAME,%-15s display processes whose name matches NAME\n", "--name=NAME\n");
-	printf("  -p PID,%-15s display processes whose pid matches PID\n", "--pid=PID\n");
-	printf("  -r REGEXP,%-15s display processes whose name matches REGEXP\n", "--regexp=REGEXP\n");
+	printf("  -n NAME,%-15s display processes whose name matches NAME\n", "--name=NAME");
+	printf("  -p PID,%-15s display processes whose pid matches PID\n", "--pid=PID");
+	printf("  -r REGEXP,%-15s display processes whose name matches REGEXP\n", "--regexp=REGEXP");
 	printf("\n");
 
 	return 0;
