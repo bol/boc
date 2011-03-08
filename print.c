@@ -43,10 +43,12 @@ int colouriseProcs() {
 
 int colourise(struct Process *proc) {
 	struct Process *p, *q;
+	
+	proc->colour = 1;
 
-	p = proc;
+	p = proc->parent;
 	while(p) {
-		p->colour++;
+		p->colour = 2;
 		p = p->parent;
 	}
 
@@ -54,7 +56,7 @@ int colourise(struct Process *proc) {
 	while(p) {
 		q = p;
 		while (q) {
-			q->colour++;
+			q->colour = 2;
 			q = q->next_sibling;
 		}
 		p = p->first_child;
@@ -69,7 +71,7 @@ int listAllProcs() {
 
 	listHeader();
 	for (proc = first_process; (proc->next_process); proc = proc->next_process) {
-		if (proc->colour != 0) {
+		if (proc->colour == 1 ) {
 			listProc(proc);
 		}
 	}
