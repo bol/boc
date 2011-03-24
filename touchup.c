@@ -21,12 +21,20 @@ int touchupProcs () {
 	struct Process *pproc;
 
 	for (proc = first_process; proc->next_process; proc = proc->next_process) {
+		/* Dummy process only used for finding siblings to init, like kthreadd */
+		if (proc->pid == 0) {
+				continue;
+		}
+
 		pproc = getProcByPid(proc->ppid);
 
 		if (pproc) {
 			addChildProc(pproc, proc);
 		}
 	}
+
+	/* Siblings added, don't need the dummy anymore */
+	deleteProcess(first_process);
 	
 	return 0;
 }

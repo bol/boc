@@ -4,8 +4,8 @@
 #include "boc.h"
 
 int init() {
-	first_process = NULL;
-	last_process = NULL;
+	first_process = newProcess();
+	last_process = first_process;
 
 	first_filter = NULL;
 	last_filter = NULL;
